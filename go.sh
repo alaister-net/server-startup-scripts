@@ -27,5 +27,5 @@ elif [ ! -z ${GITREPO} ]; then
     esac
 fi
 echo 'Bot starting in 5 seconds...'
-if [ -f /home/container/package.json ]; then npm install; fi;
-node ${BOTFILE}
+chmod +x ./${BOTFILE}
+./${BOTFILE}
