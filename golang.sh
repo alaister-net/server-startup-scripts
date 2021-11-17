@@ -26,6 +26,5 @@ elif [ ! -z ${GITREPO} ]; then
         * ) echo "Exiting script..."; exit;;
     esac
 fi
-echo 'Bot starting in 5 seconds...'
 chmod +x ./${BOTFILE}
 ./${BOTFILE}

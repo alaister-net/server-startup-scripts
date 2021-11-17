@@ -27,6 +27,5 @@ elif [ ! -z ${GITREPO} ]; then
         * ) echo "Exiting script..."; exit;;
     esac
 fi
-echo 'Bot starting in 5 seconds...'
 if [ -f /home/container/${REQUIREMENTFILE} ]; then pip3 install -U --prefix .local -r ${REQUIREMENTFILE}; fi;
 python3 ${BOTFILE}
