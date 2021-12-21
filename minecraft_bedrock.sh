@@ -7,7 +7,7 @@ if [ ! -f "$FILE" ]; then
     DOWNLOAD_FILE=$(echo ${DOWNLOAD_URL} | cut -d"/" -f5)
     rm versions.html.gz
     curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.$RANDVERSION.212 Safari/537.36" -H "Accept-Language: en" -o $DOWNLOAD_FILE $DOWNLOAD_URL
-    unzip -o $DOWNLOAD_FILE
+    unzip -qq -o $DOWNLOAD_FILE
     rm $DOWNLOAD_FILE
 fi
 chmod +x ./${FILE}
