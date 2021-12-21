@@ -9,6 +9,8 @@ if [ ! -f "$FILE" ]; then
     curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.$RANDVERSION.212 Safari/537.36" -H "Accept-Language: en" -o $DOWNLOAD_FILE $DOWNLOAD_URL
     unzip -qq -o $DOWNLOAD_FILE
     rm $DOWNLOAD_FILE
+    echo -e "*** Please restart the server to finish the installation procedure! ***"
+    exit 0
 fi
 chmod +x ./${FILE}
 ./${FILE}
