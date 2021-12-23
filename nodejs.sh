@@ -18,7 +18,7 @@ elif [ ! -z ${GITREPO} ]; then
     read confirm
     case $confirm in
         [Yy]* )
-            rm *
+            rm -rf ..?* .[!.]* *
             echo -e "/home/container is now empty. Cloning '${GITBRANCH}' from '${GITREPO}'..."
             git clone --single-branch --branch ${GITBRANCH} ${GITREPO} .
             echo -e "Finished cloning '${GITBRANCH}' from '${GITREPO}' into /home/container!"
