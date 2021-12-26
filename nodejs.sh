@@ -2,6 +2,15 @@
 BOTFILE=$1
 GITBRANCH=$2
 GITREPO=$3
+NODE_DEPENDS=''
+if [ -f .node_depends ]; then
+    NODE_DEPENDS=`< .node_depends`
+    if [[ ${NODE_DEPENDS} =~ [!?#%{}$\\[\\]|\"\\_^] ]]; then
+        echo 'Invalid characters detected in .node_depends files. Please fix it. Exiting script...'
+        exit 1
+    fi
+    rm .node_depends
+fi
 if [ -d .git ]; then
     if [ -f .git/config ]; then
         ORIGIN=$(git config --get remote.origin.url)
@@ -26,5 +35,6 @@ elif [ ! -z ${GITREPO} ]; then
         * ) echo "Exiting script..."; exit;;
     esac
 fi
-if [ -f /home/container/package.json ]; then npm install; fi;
+if [ -f package.json ]; then npm i; fi;
+if [ ! -z ${NODE_DEPENDS} ]; then npm i ${NODE_DEPENDS}; fi;
 node ${BOTFILE}
