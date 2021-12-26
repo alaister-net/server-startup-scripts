@@ -7,7 +7,7 @@ if [ -d .git ]; then
         ORIGIN=$(git config --get remote.origin.url)
         if [ ! -z "${ORIGIN}" ]; then
             echo ".git config detected. Pulling from '${ORIGIN}'..."
-            git pull
+            git pull --ff-only
         fi
     fi
 elif [ ! -z ${GITREPO} ]; then
