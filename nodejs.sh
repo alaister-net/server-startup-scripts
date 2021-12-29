@@ -36,5 +36,5 @@ elif [ ! -z ${GITREPO} ]; then
     esac
 fi
 if [ -f package.json ]; then npm i; fi;
-if [ ! -z ${NODE_DEPENDS} ]; then npm i ${NODE_DEPENDS}; fi;
+if [ ! -z "${NODE_DEPENDS}" ]; then npm i ${NODE_DEPENDS}; fi;
 node ${BOTFILE}
