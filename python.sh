@@ -1,31 +1,26 @@
 #!/bin/bash
-BOTFILE=$1
-REQUIREMENTFILE=$2
-GITBRANCH=$3
-GITREPO=$4
-if [ -d .git ]; then
-    if [ -f .git/config ]; then
-        ORIGIN=$(git config --get remote.origin.url)
-        if [ ! -z "${ORIGIN}" ]; then
-            echo ".git config detected. Pulling from '${ORIGIN}'..."
-            git pull --ff-only
-        fi
-    fi
-elif [ ! -z ${GITREPO} ]; then
-    if [[ ${GITREPO} != *.git ]]; then
-        GITREPO=${GITREPO}.git
-    fi
-    echo -e "By cloning a Git repo, all existing files will be deleted. Continue? [Enter yes or no]"
+
+BOT_FILE=$1
+REQUIREMENT_FILE=$2
+GIT_BRANCH=$3
+GIT_REPO=$4
+
+echo "Upgrading pip..."
+pip3 install -U pip
+
+wget -nv -O ./start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
+bash ./start-app "$GIT_BRANCH" "$GIT_REPO"
+
+if [ -f /home/container/${REQUIREMENT_FILE} ]; then
+    echo "${REQUIREMENT_FILE} detected. Continue to install/upgrade from ${REQUIREMENT_FILE}? [Enter yes or no]"
     read confirm
     case $confirm in
         [Yy]* )
-            rm -rf ..?* .[!.]* *
-            echo -e "/home/container is now empty. Cloning '${GITBRANCH}' from '${GITREPO}'..."
-            git clone --single-branch --branch ${GITBRANCH} ${GITREPO} .
-            echo -e "Finished cloning '${GITBRANCH}' from '${GITREPO}' into /home/container!"
+            echo "Installing/upgrading packages..."
+            pip3 install -U --prefix .local -r ${REQUIREMENT_FILE}
             ;;
-        * ) echo "Exiting script..."; exit;;
+        * ) echo "Skipped!";;
     esac
 fi
-if [ -f /home/container/${REQUIREMENTFILE} ]; then pip3 install -U --prefix .local -r ${REQUIREMENTFILE}; fi;
-python3 ${BOTFILE}
+
+python3 $BOT_FILE

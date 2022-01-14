@@ -1,30 +1,11 @@
 #!/bin/bash
+
 MEMORY=$1
-JARFILE=$2
-GITBRANCH=$3
-GITREPO=$4
-if [ -d .git ]; then
-    if [ -f .git/config ]; then
-        ORIGIN=$(git config --get remote.origin.url)
-        if [ ! -z "${ORIGIN}" ]; then
-            echo ".git config detected. Pulling from '${ORIGIN}'..."
-            git pull --ff-only
-        fi
-    fi
-elif [ ! -z ${GITREPO} ]; then
-    if [[ ${GITREPO} != *.git ]]; then
-        GITREPO=${GITREPO}.git
-    fi
-    echo -e "By cloning a Git repo, all existing files will be deleted. Continue? [Enter yes or no]"
-    read confirm
-    case $confirm in
-        [Yy]* )
-            rm -rf ..?* .[!.]* *
-            echo -e "/home/container is now empty. Cloning '${GITBRANCH}' from '${GITREPO}'..."
-            git clone --single-branch --branch ${GITBRANCH} ${GITREPO} .
-            echo -e "Finished cloning '${GITBRANCH}' from '${GITREPO}' into /home/container!"
-            ;;
-        * ) echo "Exiting script..."; exit;;
-    esac
-fi
-java -Xms128M -Xmx${MEMORY}M -Dterminal.jline=false -Dterminal.ansi=true -jar ${JARFILE}
+JAR_FILE=$2
+GIT_BRANCH=$3
+GIT_REPO=$4
+
+wget -nv -O ./start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
+bash ./start-app "$GIT_BRANCH" "$GIT_REPO"
+
+java -Xms128M -Xmx${MEMORY}M -Dterminal.jline=false -Dterminal.ansi=true -jar $JAR_FILE
