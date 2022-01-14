@@ -4,9 +4,6 @@ BOT_FILE=$1
 GIT_BRANCH=$2
 GIT_REPO=$3
 
-echo "Installing/upgrading npm and corepack..."
-npm install -g npm corepack
-
 wget -nv -O ./start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash ./start-app "$GIT_BRANCH" "$GIT_REPO"
 

@@ -5,9 +5,6 @@ REQUIREMENT_FILE=$2
 GIT_BRANCH=$3
 GIT_REPO=$4
 
-echo "Upgrading pip..."
-pip3 install -U pip
-
 wget -nv -O ./start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash ./start-app "$GIT_BRANCH" "$GIT_REPO"
 

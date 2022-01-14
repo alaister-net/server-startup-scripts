@@ -6,7 +6,7 @@ GIT_REPO=$2
 shell_access () {
     while true
     do
-        read -p "container@pterodactyl:/home/container$ " cmd
+        read -p "container@alaister:$ " cmd
         if [ "$cmd" == "exit" ]; then
             break
         else
@@ -22,6 +22,7 @@ case $confirm in
     [Yy]* )
         echo "Shell access mode enabled! Enter 'exit' to quit shell access mode."
         echo "Warning: terminal text editors and long running processes do not work in this mode."
+        echo "container@alaister:$ "
         shell_access
         ;;
 esac
