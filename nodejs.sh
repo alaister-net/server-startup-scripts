@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OPTS=`getopt -l file:,repo:,branch:,manager:,shell:,auto-install:,auto-pull: -n 'parse-options' -- "$@"`
+OPTS=$(getopt -l file:,repo::,branch::,manager:,shell:,auto-install:,auto-pull: -n 'parse-options' -- "$@")
 
 if [ $? != 0 ]; then
     echo "Failed parsing options! Exiting..."
