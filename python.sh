@@ -49,8 +49,8 @@ wget -nv -O /home/container/start-app https://github.com/alaister-net/server-sta
 bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
 
 
-if [ -f ${REQUIREMENTS} ] && [  $AUTO_INSTALL != "no" ]; then
-    if [ $AUTO_INSTALL == "ask" ]; then
+if [ -f $REQUIREMENTS ] && [  "$AUTO_INSTALL" != "no" ]; then
+    if [ "$AUTO_INSTALL" == "ask" ]; then
         echo "** pip requirements file detected. Continue to install/upgrade from it? [Enter yes or no] **"
         echo "Hint: You can now hide this prompt by setting the default value on the 'Startup' page."
         read confirm

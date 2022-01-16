@@ -24,14 +24,14 @@ shell_access () {
     done
 }
 
-if [ $SHELL == "ask" ]; then
+if [ "$SHELL" == "ask" ]; then
     echo "** Do you want to enable shell access mode? (for advanced users) [Enter yes or no] **"
     echo "Hint: You can now hide this prompt by setting the default value on the 'Startup' page."
     read confirm
     case $confirm in
         [Yy]* ) shell_access;;
     esac
-elif [ $SHELL == "yes" ]; then
+elif [ "$SHELL" == "yes" ]; then
     shell_access
 fi
 
@@ -41,8 +41,8 @@ cd /home/container
 if [ -d .git ]; then
     if [ -f .git/config ]; then
         ORIGIN=$(git config --get remote.origin.url)
-        if [ ! -z "$ORIGIN" ]; && [ $AUTO_PULL != "no" ]; then
-            if [ $AUTO_PULL == "ask" ]; then
+        if [ ! -z "$ORIGIN" ] && [ "$AUTO_PULL" != "no" ]; then
+            if [ "$AUTO_PULL" == "ask" ]; then
                 echo "** .git config detected. Continue to pull from '${ORIGIN}'? [Enter yes or no] **"
                 echo "Hint: You can now hide this prompt by setting the default value on the 'Startup' page."
                 read confirm
