@@ -1,29 +1,14 @@
 #!/bin/bash
 
-OPTS=$(getopt -l file:,repo::,branch::,manager:,shell:,auto-install:,auto-pull: -n 'parse-options' -- "$@")
-
-if [ $? != 0 ]; then
-    echo "Failed parsing options! Exiting..."
-    exit 1
-fi
-
-eval set -- "$OPTS"
-
-FILE=""
-REPO=""
-BRANCH=""
-MANAGER=""
-SHELL=""
-AUTO_INSTALL=""
-AUTO_PULL=""
-
-while true; do
+while [ ! -z "$1" ]; do
     case "$1" in
         --file ) FILE="$2"; shift 2;;
         --repo )
             if [[ $2 != --* ]]; then
                 REPO="$2"
                 shift
+            else
+                REPO=""
             fi
             shift
             ;;
@@ -32,6 +17,8 @@ while true; do
             if [[ $2 != --* ]]; then
                 BRANCH="$2"
                 shift
+            else
+                BRANCH=""
             fi
             shift
             ;;
