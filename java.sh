@@ -31,12 +31,14 @@ while [ ! -z "$1" ]; do
     esac
 done
 
-echo "* Memory: ${MEMORY}"
-echo "* Bot File: ${FILE}"
-echo "* Git Repo: ${REPO}"
-echo "* Git Branch: ${BRANCH}"
-echo "* Enable Shell: ${SHELL}"
-echo "* Auto Pull: ${AUTO_PULL}"
+cat << EOF
+* Memory: $MEMORY
+* Bot File: $FILE
+* Git Repo: $REPO
+* Git Branch: $BRANCH
+* Enable Shell: $SHELL
+* Auto Pull: $AUTO_PULL
+EOF
 
 wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL

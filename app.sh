@@ -6,11 +6,13 @@ SHELL=$3
 AUTO_PULL=$4
 
 shell_access () {
-    echo "************************************************************"
-    echo "Shell access mode enabled! Enter 'exit' to quit shell access mode."
-    echo "WARNING! terminal text editors and long running processes do not work in this mode."
-    echo "************************************************************"
-    echo "container@alaister:$ "
+    cat << EOF
+************************************************************
+Shell access mode enabled! Enter 'exit' to quit shell access mode.
+WARNING! terminal text editors and long running processes do not work in this mode.
+************************************************************
+container@alaister:$ 
+EOF
     
     while true; do
         read -p "container@alaister:$ " cmd

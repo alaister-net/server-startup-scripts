@@ -32,13 +32,15 @@ while [ ! -z "$1" ]; do
     esac
 done
 
-echo "* Bot File: ${FILE}"
-echo "* Requirements File: ${REQUIRMENTS}"
-echo "* Git Repo: ${REPO}"
-echo "* Git Branch: ${BRANCH}"
-echo "* Enable Shell: ${SHELL}"
-echo "* Auto Install: ${AUTO_INSTALL}"
-echo "* Auto Pull: ${AUTO_PULL}"
+cat << EOF
+* Bot File: $FILE
+* Requirements File: $REQUIREMENTS
+* Git Repo: $REPO
+* Git Branch: $BRANCH
+* Enable Shell: $SHELL
+* Auto Install: $AUTO_INSTALL
+* Auto Pull: $AUTO_PULL
+EOF
 
 wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
