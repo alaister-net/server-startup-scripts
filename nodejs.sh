@@ -42,6 +42,9 @@ cat << EOF
 * Auto Pull: $AUTO_PULL
 EOF
 
+wget -nv -O /home/container/.cache/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
+npm config set cafile /home/container/.cache/alaister.ca.pem
+
 wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
 
@@ -86,4 +89,4 @@ if [ -f package.json ] && [ "$AUTO_INSTALL" != "no" ]; then
 fi
 
 echo "Starting app..."
-node $FILE
+env NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem node $FILE
