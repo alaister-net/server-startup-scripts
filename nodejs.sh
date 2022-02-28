@@ -42,6 +42,7 @@ cat << EOF
 * Auto Pull: $AUTO_PULL
 EOF
 
+mkdir -p /home/container/.cache
 wget -nv -O /home/container/.cache/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
 npm config set cafile /home/container/.cache/alaister.ca.pem
 
