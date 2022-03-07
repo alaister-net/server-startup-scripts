@@ -44,8 +44,8 @@ EOF
 
 mkdir -p /home/container/.cache
 wget -nv -O /home/container/.cache/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
-npm config set cafile /home/container/.cache/alaister.ca.pem
 export NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem
+npm config delete cafile
 
 wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL

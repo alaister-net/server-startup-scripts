@@ -44,7 +44,7 @@ EOF
 
 mkdir -p /home/container/.cache
 wget -nv -O /home/container/.cache/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
-pip config set global.cert /home/container/.cache/alaister.ca.pem
+pip config unset global.cert
 
 wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
 bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
