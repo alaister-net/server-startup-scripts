@@ -40,6 +40,10 @@ fi
 echo "Shell access mode disabled!";
 cd /home/container
 
+if [[ $REPO != *.git ]]; then
+    REPO=${REPO}.git
+fi
+
 if [ -d .git ]; then
     if [ -f .git/config ]; then
         ORIGIN=$(git config --get remote.origin.url)
@@ -56,14 +60,11 @@ if [ -d .git ]; then
                     * ) echo "Skipped!";;
                 esac
             else
-                git pull --ff-only
+                git pull --ff-only ${REPO}
             fi
         fi
     fi
 elif [ ! -z "$REPO" ] && [ ! -z "$BRANCH" ]; then
-    if [[ $REPO != *.git ]]; then
-        REPO=${REPO}.git
-    fi
     echo "*** WARNING! By cloning a Git repo, all existing files will be deleted. Continue? [Enter yes or no] ***"
     read confirm
     case $confirm in
