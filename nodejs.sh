@@ -3,6 +3,16 @@
 while [ ! -z "$1" ]; do
     case "$1" in
         --file ) FILE="$2"; shift 2;;
+        --npm-script )
+            if [[ $2 != --* ]]; then
+                NPM_SCRIPT="$2"
+                shift
+            else
+                NPM_SCRIPT=""
+            fi
+            shift
+            ;;
+        
         --repo )
             if [[ $2 != --* ]]; then
                 REPO="$2"
@@ -91,4 +101,9 @@ if [ -f package.json ] && [ "$AUTO_INSTALL" != "no" ]; then
 fi
 
 echo "Starting app..."
-env NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem node $FILE
+
+if [ -z "$NPM_SCRIPT" ]; then
+    env NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem node $FILE
+else
+    env NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem npm run $NPM_SCRIPT
+fi
