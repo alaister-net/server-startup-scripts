@@ -40,8 +40,8 @@ cat << EOF
 * Auto Pull: $AUTO_PULL
 EOF
 
-wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
-bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
+wget -nv -O /tmp/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
+bash /tmp/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
 
 echo "Starting app..."
 java -Xms128M -Xmx${MEMORY}M -Dterminal.jline=false -Dterminal.ansi=true -jar $FILE

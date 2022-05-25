@@ -27,6 +27,7 @@ while [ ! -z "$1" ]; do
         --shell ) SHELL="$2"; shift 2;;
         --auto-install ) AUTO_INSTALL="$2"; shift 2;;
         --auto-pull ) AUTO_PULL="$2"; shift 2;;
+        --logger ) LOGGER="$2"; shift 2;;
         -- ) shift; break;;
         * ) break;;
     esac
@@ -40,15 +41,14 @@ cat << EOF
 * Enable Shell: $SHELL
 * Auto Install: $AUTO_INSTALL
 * Auto Pull: $AUTO_PULL
+* Enable Logger: $LOGGER
 EOF
 
-mkdir -p /home/container/.cache
-wget -nv -O /home/container/.cache/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
-pip config unset global.cert
+wget -nv -O /tmp/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
+bash /tmp/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
 
-wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
-bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
-
+# Backward compatibility
+pip config unset global.cert >> /dev/null 2>&1
 
 if [ -f $REQUIREMENTS ] && [  "$AUTO_INSTALL" != "no" ]; then
     if [ "$AUTO_INSTALL" == "ask" ]; then
@@ -68,4 +68,11 @@ if [ -f $REQUIREMENTS ] && [  "$AUTO_INSTALL" != "no" ]; then
 fi
 
 echo "Starting app..."
-python3 $FILE
+
+CMD="python3 $FILE"
+
+if [ "$LOGGER" == "yes" ]; then
+    CMD="$CMD | tee alaister_debug_$(date +%d-%m-%Y_%H-%M-%S).log"
+fi
+
+eval $CMD

@@ -5,6 +5,12 @@ BRANCH=$2
 SHELL=$3
 AUTO_PULL=$4
 
+wget -nv -O /tmp/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
+
+# Legacy files
+rm /home/container/start-app /home/container/.cache/alaister.ca.pem >> /dev/null 2>&1
+rmdir /home/container/.cache >> /dev/null 2>&1
+
 shell_access () {
     cat << EOF
 ************************************************************
@@ -20,7 +26,7 @@ EOF
             break
         else
             eval "$cmd"
-            sleep 1
+            sleep 0.2
             echo "container@alaister:$ "
         fi
     done

@@ -37,6 +37,7 @@ while [ ! -z "$1" ]; do
         --shell ) SHELL="$2"; shift 2;;
         --auto-install ) AUTO_INSTALL="$2"; shift 2;;
         --auto-pull ) AUTO_PULL="$2"; shift 2;;
+        --logger ) LOGGER="$2"; shift 2;;
         -- ) shift; break;;
         * ) break;;
     esac
@@ -44,21 +45,21 @@ done
 
 cat << EOF
 * Bot File: $FILE
+* npm Script: $NPM_SCRIPT
 * Git Repo: $REPO
 * Git Branch: $BRANCH
 * Package Manager: $MANAGER
 * Enable Shell: $SHELL
 * Auto Install: $AUTO_INSTALL
 * Auto Pull: $AUTO_PULL
+* Enable Logger: $LOGGER
 EOF
 
-mkdir -p /home/container/.cache
-wget -nv -O /home/container/.cache/alaister.ca.pem https://github.com/alaister-net/yolks/raw/master/ca.pem
-export NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem
-npm config delete cafile
+wget -nv -O /tmp/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
+bash /tmp/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
 
-wget -nv -O /home/container/start-app https://github.com/alaister-net/server-startup-scripts/raw/master/app.sh
-bash /home/container/start-app "$REPO" "$BRANCH" $SHELL $AUTO_PULL
+export NODE_EXTRA_CA_CERTS=/tmp/alaister.ca.pem
+npm config delete cafile
 
 if [ "$MANAGER" == "ask" ]; then
     echo "** Please choose a node package manager: [Enter the integer] **"
@@ -102,8 +103,14 @@ fi
 
 echo "Starting app..."
 
-if [ -z "$NPM_SCRIPT" ]; then
-    env NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem node $FILE
-else
-    env NODE_EXTRA_CA_CERTS=/home/container/.cache/alaister.ca.pem npm run $NPM_SCRIPT
+CMD="node $FILE"
+
+if [ ! -z "$NPM_SCRIPT" ]; then
+    CMD="npm run $NPM_SCRIPT"
 fi
+
+if [ "$LOGGER" == "yes" ]; then
+    CMD="$CMD | tee alaister_debug_$(date +%d-%m-%Y_%H-%M-%S).log"
+fi
+
+eval env NODE_EXTRA_CA_CERTS=/tmp/alaister.ca.pem $CMD 
